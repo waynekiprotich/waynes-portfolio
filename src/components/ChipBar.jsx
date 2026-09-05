@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from '@/lib/router'
 
 const TABS = [
   { to: '/work', label: 'Selected work and case studies' },

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@/lib/router'
 import SEO from '@/components/SEO'
 import PageHeader from '@/components/PageHeader'
 

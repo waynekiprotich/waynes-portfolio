@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '@/lib/router'
 import { gsap, prefersReducedMotion } from '@/lib/motion'
 import { SITE } from '@/data/site'
 
@@ -80,7 +80,7 @@ export default function Hero() {
       />
 
       <div className="shell-inner relative">
-        <p className="eyebrow" data-intro-fade style={{ animationDelay: '0.45s' }}>
+        <p className="eyebrow" data-intro-fade style={{ animationDelay: '0.18s' }}>
           {SITE.location} — Available for work
         </p>
 
@@ -93,7 +93,7 @@ export default function Hero() {
                 <span
                   data-word
                   className="inline-block"
-                  style={{ animationDelay: `${0.1 + i * 0.09}s` }}
+                  style={{ animationDelay: `${0.04 + i * 0.07}s` }}
                 >
                   {word}
                 </span>
@@ -104,11 +104,11 @@ export default function Hero() {
         </h1>
 
         <div className="mt-10 grid gap-8 border-t border-line pt-8 md:grid-cols-[minmax(0,26ch)_minmax(0,40ch)_1fr] md:gap-12">
-          <p className="text-lede leading-snug text-ink" data-intro-fade style={{ animationDelay: '0.55s' }}>
+          <p className="text-lede leading-snug text-ink" data-intro-fade style={{ animationDelay: '0.24s' }}>
             Full-Stack Software Engineer building software that holds up in use.
           </p>
 
-          <p className="text-[14px] leading-relaxed text-muted" data-intro-fade style={{ animationDelay: '0.65s' }}>
+          <p className="text-[14px] leading-relaxed text-muted" data-intro-fade style={{ animationDelay: '0.30s' }}>
             I design and ship modern web applications end to end — the data model, the API and
             the interface people actually touch.
           </p>
@@ -116,7 +116,7 @@ export default function Hero() {
           <div
             className="flex flex-wrap items-start gap-2 md:justify-end"
             data-intro-fade
-            style={{ animationDelay: '0.75s' }}
+            style={{ animationDelay: '0.36s' }}
           >
             <Link to="/work" className="btn btn-solid">Selected work</Link>
             <Link to="/contact" className="btn btn-ghost">Start a project</Link>

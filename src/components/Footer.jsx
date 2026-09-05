@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@/lib/router'
 import { SITE } from '@/data/site'
 
 const NAV = [

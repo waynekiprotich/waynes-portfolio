@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@/lib/router'
 import SectionHeading from './SectionHeading'
 import useReveal from '@/hooks/useReveal'
 import posts from '@/data/blog.json'

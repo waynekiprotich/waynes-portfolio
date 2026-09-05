@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from '@/lib/router'
 import Preloader from '@/components/Preloader'
 import NavDock from '@/components/NavDock'
 import ChipBar from '@/components/ChipBar'
@@ -47,15 +47,14 @@ export default function RootLayout({ children }) {
       {!revealed && <Preloader onDone={handleIntroDone} />}
       <Grain />
 
-      <div
-        className="transition-opacity duration-300"
-        style={{ opacity: revealed ? 1 : 0 }}
-        aria-hidden={!revealed}
-      >
-        <ChipBar />
-        <main id="main">{children}</main>
-        <Footer />
-      </div>
+      {/* No opacity gate on the content: it paints immediately and the
+          shutter above simply uncovers it. Holding it at opacity:0 until the
+          intro finished delayed first paint for every new visitor, and left
+          a fully laid-out but invisible page underneath — which is what let
+          scroll reveals mark themselves done while nothing was on screen. */}
+      <ChipBar />
+      <main id="main">{children}</main>
+      <Footer />
 
       <NavDock />
     </>

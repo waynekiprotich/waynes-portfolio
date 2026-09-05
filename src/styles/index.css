@@ -122,8 +122,23 @@
   .reveal-ready [data-reveal].is-revealed {
     opacity: 1;
     transform: none;
-    transition: opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
-                transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+    /* 500ms, not 800: at 800 a reader scrolling at a normal pace outruns the
+       transition and spends the page reading text that is still arriving. */
+    transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Intro shutter. Lifts away rather than fading, so the page underneath is
+     never dimmed — it is already painted and simply gets uncovered. */
+  @keyframes preloader-lift {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-100%); }
+  }
+  .preloader {
+    animation: preloader-lift 380ms cubic-bezier(0.65, 0, 0.35, 1) 120ms both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .preloader { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -143,11 +158,14 @@
     to   { opacity: 1; transform: none; }
   }
 
+  /* The h1 is the LCP element and starts clipped out of view, so its
+     duration and delay are a direct cost on Largest Contentful Paint —
+     kept short for that reason, not for taste. */
   .reveal-ready [data-word] {
-    animation: intro-rise 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: intro-rise 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   .reveal-ready [data-intro-fade] {
-    animation: intro-fade 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: intro-fade 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   @media (prefers-reduced-motion: reduce) {

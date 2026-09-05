@@ -11,8 +11,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
+          // gsap is the only dependency big enough to be worth its own
+          // chunk; routing is now ~1kB of local code and belongs inline.
           gsap: ['gsap'],
-          router: ['react-router-dom'],
         },
       },
     },

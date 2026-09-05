@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@/lib/router'
 import ProjectImage from './ProjectImage'
 
 /** Grid variant, used on the work index where projects are browsed side by side. */

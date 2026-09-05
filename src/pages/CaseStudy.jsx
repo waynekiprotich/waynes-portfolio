@@ -1,4 +1,4 @@
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from '@/lib/router'
 import SEO from '@/components/SEO'
 import StudySection from '@/components/case-study/StudySection'
 import CodeBlock from '@/components/case-study/CodeBlock'

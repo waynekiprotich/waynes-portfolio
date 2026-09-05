@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@/lib/router'
 import ProjectRow from './ProjectRow'
 import useReveal from '@/hooks/useReveal'
 import { FEATURED_WORK } from '@/data/work'
