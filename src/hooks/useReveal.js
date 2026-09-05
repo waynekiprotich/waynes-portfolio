@@ -28,6 +28,10 @@ export default function useReveal(options = {}, deps = []) {
       return
     }
 
+    // Don't re-reveal elements that are already revealed (handles StrictMode cleanup).
+    const toObserve = els.filter((el) => !el.classList.contains(REVEALED))
+    if (!toObserve.length) return
+
     const observer = new IntersectionObserver(
       (entries, obs) => {
         // Stagger by position within the batch that crossed together.
@@ -42,7 +46,7 @@ export default function useReveal(options = {}, deps = []) {
       { rootMargin, threshold: 0.01 }
     )
 
-    els.forEach((el) => observer.observe(el))
+    toObserve.forEach((el) => observer.observe(el))
     return () => observer.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
