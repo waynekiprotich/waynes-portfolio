@@ -47,7 +47,55 @@ export default function useReveal(options = {}, deps = []) {
     )
 
     toObserve.forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
+
+    // IntersectionObserver only fires on a genuine intersecting/not-intersecting
+    // transition sampled between rendering opportunities. A background tab
+    // resuming, or a large scroll jump (Lenis + ScrollTrigger.refresh landing
+    // on a new position in one step) can move an element clean across the
+    // viewport between two samples, so the transition is never observed and
+    // the element is stuck invisible with nothing left watching it. A short
+    // rAF sweep right after mount catches that case by re-checking geometry
+    // directly, then stops itself as soon as nothing is left to catch up on.
+    let pending = new Set(toObserve)
+    const sweep = () => {
+      pending.forEach((el) => {
+        if (el.classList.contains(REVEALED)) {
+          pending.delete(el)
+          return
+        }
+        const rect = el.getBoundingClientRect()
+        const vh = window.innerHeight || document.documentElement.clientHeight
+        if (rect.top < vh && rect.bottom > 0) {
+          el.classList.add(REVEALED)
+          observer.unobserve(el)
+          pending.delete(el)
+        }
+      })
+    }
+
+    let raf = null
+    let frames = 0
+    const poll = () => {
+      sweep()
+      frames += 1
+      // ~2s at 60fps covers the preloader/route-transition window; after
+      // that, visibility/focus/pageshow below still catch later jumps.
+      if (pending.size && frames < 120) raf = requestAnimationFrame(poll)
+    }
+    raf = requestAnimationFrame(poll)
+
+    const onVisible = () => document.visibilityState === 'visible' && sweep()
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('pageshow', sweep)
+    window.addEventListener('focus', sweep)
+
+    return () => {
+      observer.disconnect()
+      if (raf) cancelAnimationFrame(raf)
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('pageshow', sweep)
+      window.removeEventListener('focus', sweep)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 
