@@ -1,0 +1,137 @@
+[
+  {
+    "category": "Dashboard",
+    "codeHref": "https://github.com/waynekiprotich/apexgrid-client.git",
+    "description": "Formula 1 analytics dashboard with live standings, race telemetry, pit strategies, and session insights.",
+    "featured": false,
+    "github": "https://github.com/waynekiprotich/apexgrid-client.git",
+    "id": 3,
+    "live": "https://apexgrid-client.vercel.app/",
+    "liveHref": "https://apexgrid-client.vercel.app/",
+    "previewImage": "/projects/project_3.webp",
+    "tags": [
+      "React",
+      "OpenF1 API"
+    ],
+    "tech": [
+      "React",
+      "OpenF1 API",
+      "Vite",
+      "Tailwind"
+    ],
+    "title": "ApexGrid"
+  },
+  {
+    "category": "Education",
+    "codeHref": "https://github.com/Leevy-Otieno/Stacke_Battleke_frontend",
+    "description": "A gamified competitive programming platform for students with real-time challenges and peer-to-peer matchups.",
+    "featured": true,
+    "github": "https://github.com/Leevy-Otieno/Stacke_Battleke_frontend",
+    "id": 1,
+    "live": "https://stacke-battleke-frontend.vercel.app/login",
+    "liveHref": "https://stacke-battleke-frontend.vercel.app/login",
+    "previewImage": "/projects/project_1.webp",
+    "tags": [
+      "React",
+      "Flask"
+    ],
+    "tech": [
+      "React",
+      "Flask",
+      "SQLAlchemy",
+      "PostgreSQL"
+    ],
+    "title": "Stack-Battle KE"
+  },
+  {
+    "category": "Dashboard",
+    "codeHref": "https://github.com/demo/weathernow",
+    "description": "Intelligent weather dashboard delivering live forecasts, location search, and interactive weather visualizations.",
+    "featured": false,
+    "github": "https://github.com/demo/weathernow",
+    "id": 7,
+    "live": "https://atmosiq-plum.vercel.app/",
+    "liveHref": "https://atmosiq-plum.vercel.app/",
+    "previewImage": "/projects/project_7.webp",
+    "tags": [
+      "API Integration",
+      "Weather",
+      "Widgets"
+    ],
+    "tech": [
+      "React",
+      "OpenWeather API",
+      "CSS Animations"
+    ],
+    "title": "AtmosIQ"
+  },
+  {
+    "category": "Finance",
+    "codeHref": "https://github.com/demo/budgetbuddy",
+    "description": "Personal finance dashboard for tracking spending, budgets, savings, and financial performance.",
+    "featured": true,
+    "github": "https://github.com/demo/budgetbuddy",
+    "id": 9,
+    "live": "https://vaultora-client.vercel.app/",
+    "liveHref": "https://vaultora-client.vercel.app/",
+    "previewImage": "/projects/project_9.webp",
+    "tags": [
+      "Finance",
+      "Data Visualization",
+      "Dashboard"
+    ],
+    "tech": [
+      "Next.js",
+      "Supabase",
+      "Recharts",
+      "Tailwind CSS"
+    ],
+    "title": "Vaultora"
+  },
+  {
+    "category": "Productivity",
+    "codeHref": "https://github.com/demo/taskflow",
+    "description": "Collaborative project management platform featuring live task updates, drag-and-drop boards, and team workspaces.",
+    "featured": true,
+    "github": "https://github.com/demo/taskflow",
+    "id": 5,
+    "live": "https://taskflow-demo.vercel.app",
+    "liveHref": "https://taskflow-demo.vercel.app",
+    "previewImage": "/projects/project_5.webp",
+    "tags": [
+      "Productivity",
+      "Collaboration",
+      "SaaS"
+    ],
+    "tech": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Socket.io"
+    ],
+    "title": "TaskNova"
+  },
+  {
+    "category": "E-commerce",
+    "codeHref": "https://github.com/demo/shopease",
+    "description": "Premium e-commerce platform with secure payments, product discovery, and a modern shopping experience.",
+    "featured": false,
+    "github": "https://github.com/demo/shopease",
+    "id": 6,
+    "live": "https://shopease-demo.vercel.app",
+    "liveHref": "https://shopease-demo.vercel.app",
+    "previewImage": "/projects/project_6.webp",
+    "tags": [
+      "E-commerce",
+      "UI/UX",
+      "Payments"
+    ],
+    "tech": [
+      "Next.js",
+      "Tailwind CSS",
+      "Stripe API"
+    ],
+    "title": "Mercora"
+  }
+]

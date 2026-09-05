@@ -1,0 +1,215 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --shell-x: clamp(1rem, 3.5vw, 3.5rem);
+
+    /* Light palette (default). Every value is an "R G B" triple so Tailwind's
+       rgb(var(--x) / <alpha-value>) pattern can apply opacity modifiers
+       (bg-ivory/85, text-ink/70, …) on top of it. */
+    --c-bone: 239 236 229;   /* page background */
+    --c-ivory: 247 245 241;  /* raised card */
+    --c-sand: 227 220 206;   /* inset / placeholder */
+    --c-ink: 26 25 23;       /* primary text; solid-button background */
+    --c-muted: 96 92 86;     /* secondary text — 5.6:1 on bone, 6.1:1 on ivory */
+    --c-faint: 108 105 99;   /* tertiary text, eyebrows — 4.6:1 / 5.0:1, still AA */
+    --c-sky: 143 196 232;    /* single accent, used sparingly */
+    --c-line-rgb: 26 25 23;  /* hairline borders, tinted from ink */
+    --grain-blend: multiply; /* darkens speckles into a light surface */
+    --grain-opacity: 0.05;
+    /* Floating-dock shadow. Kept as its own token rather than derived from
+       --c-ink: a shadow should stay dark for depth in both themes — using
+       ink's dark-mode value (near-white) here would paint a glow, not a
+       shadow. */
+    --shadow-dock: rgba(26, 25, 23, 0.1);
+    color-scheme: light;
+  }
+
+  /* Dark mode. Same roles, inverted values — components never carry a
+     `dark:` variant of their own because every color they use is one of
+     these tokens. Resolution order: an explicit user choice (data-theme,
+     set by the inline script in index.html and by useTheme) beats the
+     system preference, which is the fallback for no-JS clients. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      --c-bone: 23 22 19;
+      --c-ivory: 32 31 27;
+      --c-sand: 44 42 37;
+      --c-ink: 237 234 226;
+      --c-muted: 174 168 157; /* 7.7:1 on bone, 7.0:1 on ivory */
+      --c-faint: 144 138 128; /* 5.3:1 / 4.8:1, still AA */
+      --c-sky: 122 178 214;
+      --c-line-rgb: 237 234 226;
+      /* Multiply would nearly vanish against a near-black page; soft-light
+         still reads as texture rather than a wash of brightness. */
+      --grain-blend: soft-light;
+      --grain-opacity: 0.09;
+      --shadow-dock: rgba(0, 0, 0, 0.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme='dark'] {
+    --c-bone: 23 22 19;
+    --c-ivory: 32 31 27;
+    --c-sand: 44 42 37;
+    --c-ink: 237 234 226;
+    --c-muted: 174 168 157;
+    --c-faint: 144 138 128;
+    --c-sky: 122 178 214;
+    --c-line-rgb: 237 234 226;
+    --grain-blend: soft-light;
+    --grain-opacity: 0.09;
+    --shadow-dock: rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+
+  html {
+    background-color: rgb(var(--c-bone));
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Native smooth scrolling fights both Lenis and ScrollTrigger's position
+     reads, so it stays off; in-page jumps are handled in JS instead. */
+  html { scroll-behavior: auto; }
+  html.lenis-stopped { overflow: hidden; }
+
+  body {
+    @apply bg-bone text-ink font-sans antialiased;
+    margin: 0;
+    overflow-x: hidden;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  ::selection { background: rgb(var(--c-ink)); color: rgb(var(--c-bone)); }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-ink));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  h1, h2, h3, h4 { @apply font-medium; text-wrap: balance; }
+  img { max-width: 100%; display: block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .shell { padding-left: var(--shell-x); padding-right: var(--shell-x); }
+  .shell-inner { @apply mx-auto w-full max-w-shell; }
+
+  .eyebrow { @apply text-micro uppercase text-faint font-medium; }
+  .rule { border-top: 1px solid rgb(var(--c-line-rgb) / 0.12); }
+
+  /* Scroll reveals. The hidden state is scoped to .reveal-ready, which main.jsx
+     sets before the first render — so if the bundle never runs, nothing is
+     left invisible. IntersectionObserver adds .is-revealed; the transition is
+     CSS, which keeps it composited and independent of the animation frame. */
+  .reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+    will-change: transform, opacity;
+  }
+  .reveal-ready [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-ready [data-reveal] { opacity: 1; transform: none; }
+  }
+
+  /* Page-intro motion. Deliberately CSS rather than GSAP: a CSS animation is
+     time-based and always lands on its final frame, so a throttled ticker
+     (a first load in a background tab, say) can never leave the heading
+     stranded in its opening position. */
+  @keyframes intro-rise {
+    from { transform: translateY(108%); }
+    to   { transform: translateY(0); }
+  }
+  @keyframes intro-fade {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .reveal-ready [data-word] {
+    animation: intro-rise 1.05s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .reveal-ready [data-intro-fade] {
+    animation: intro-fade 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-ready [data-word],
+    .reveal-ready [data-intro-fade] { animation: none; }
+  }
+
+  /* Rounded chip used for the top bar and for tag rows. */
+  .chip {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill border border-line
+           bg-ivory px-4 py-2 text-[13px] leading-none text-muted
+           transition-colors duration-150 ease-editorial;
+  }
+  .chip:hover { @apply border-lineStrong text-ink; }
+  .chip-active { @apply border-ink bg-ink text-bone; }
+
+  .btn {
+    /* min-h-11 (44px) meets the standard touch-target floor on a phone;
+       sm:min-h-0 lifts it once a pointer is the more likely input. */
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-pill border border-line
+           px-6 py-3 text-[13px] font-medium leading-none
+           transition-colors duration-150 ease-editorial sm:min-h-0;
+  }
+  .btn-solid { @apply bg-ink text-bone border-ink hover:bg-ink/85; }
+  .btn-ghost { @apply bg-ivory text-ink hover:border-lineStrong; }
+
+  .card {
+    @apply rounded-card border border-line bg-ivory;
+    transition: background-color 200ms ease, border-color 150ms ease;
+  }
+
+  /* Square icon button matching the pill family — used for the theme toggle.
+     44px on a phone, 36px once a pointer is the more likely input. */
+  .icon-btn {
+    @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-pill text-ink
+           transition-colors duration-150 ease-editorial hover:bg-ink/5 sm:h-9 sm:w-9;
+  }
+
+  /* Fixed grain layer. Blend mode and opacity swap per theme (see :root
+     above) so the texture reads as texture rather than vanishing on a dark
+     page or washing out a light one. */
+  .grain {
+    mix-blend-mode: var(--grain-blend);
+    opacity: var(--grain-opacity);
+  }
+
+  .link-underline { @apply relative inline-block; }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}

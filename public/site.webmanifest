@@ -1,0 +1,27 @@
+{
+  "name": "Wayne Kiprotich — Full-Stack Software Engineer",
+  "short_name": "Wayne Kiprotich",
+  "description": "Portfolio of Wayne Kiprotich, a full-stack software engineer in Nairobi, Kenya.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#EFECE5",
+  "theme_color": "#EFECE5",
+  "icons": [
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
