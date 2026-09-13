@@ -48,8 +48,8 @@ export default function ProjectRow({ project, index = 0, priority = false }) {
         </div>
 
         <div
-          className={`relative aspect-[4/3] w-full overflow-hidden rounded-card border border-line
-                      bg-sand sm:aspect-[16/10] ${flip ? 'md:order-1' : ''}`}
+          className={`relative aspect-[16/9] w-full overflow-hidden rounded-card border border-line
+                      bg-sand ${flip ? 'md:order-1' : ''}`}
         >
           <ProjectImage
             src={previewImage}

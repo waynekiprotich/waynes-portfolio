@@ -12,7 +12,7 @@ export default function ProjectCard({ project, priority = false, index }) {
         className="card flex h-full flex-col overflow-hidden transition-colors duration-200
                    ease-editorial hover:border-lineStrong"
       >
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-sand">
+        <div className="relative aspect-[16/9] w-full overflow-hidden border-b border-line bg-sand">
           <ProjectImage
             src={previewImage}
             alt={`${title} — ${category} interface`}

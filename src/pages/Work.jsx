@@ -61,7 +61,7 @@ export default function Work() {
               <ProjectCard
                 key={project.slug}
                 project={project}
-                ratio="aspect-[4/3]"
+                ratio="aspect-[16/9]"
                 priority={i < 3}
                 index={i}
               />

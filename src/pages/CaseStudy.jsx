@@ -199,7 +199,7 @@ export default function CaseStudy() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   {gallery.map(({ url, caption }) => (
                     <figure key={url} className="overflow-hidden rounded-card border border-line bg-ivory">
-                      <div className="relative aspect-[16/10] overflow-hidden">
+                      <div className="relative aspect-[16/9] overflow-hidden">
                         <img
                           src={url}
                           alt={caption || study.title}
