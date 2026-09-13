@@ -42,5 +42,27 @@
       "PostgreSQL"
     ],
     "title": "Stack-Battle KE"
+  },
+  {
+    "category": "E-commerce",
+    "codeHref": "https://github.com/waynekiprotich/kingdom-client.git",
+    "description": "Kenyan clothing storefront with guest checkout and M-Pesa payment integration.",
+    "featured": true,
+    "github": "https://github.com/waynekiprotich/kingdom-client.git",
+    "id": 2,
+    "live": "https://kingdom-client.waynekip123.workers.dev/",
+    "liveHref": "https://kingdom-client.waynekip123.workers.dev/",
+    "previewImage": "/projects/project_2.webp",
+    "tags": [
+      "React",
+      "E-commerce"
+    ],
+    "tech": [
+      "React",
+      "Node.js",
+      "Cloudinary",
+      "M-Pesa API"
+    ],
+    "title": "The Kingdom Collection"
   }
 ]
