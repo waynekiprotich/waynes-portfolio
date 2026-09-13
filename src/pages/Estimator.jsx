@@ -11,13 +11,15 @@ import {
 } from '@/utils/estimatorConfig'
 
 /**
- * Frontend-only scoping tool. Everything lives in local state; the final step
- * composes an email rather than posting anywhere, so there is no server to
- * stand behind it.
+ * Scoping tool. Everything lives in local state until "Send brief", which
+ * posts to /api/estimate (a Vercel function that forwards it to Discord). If
+ * that fails, the visitor can still send the same brief by email.
  */
 export default function Estimator() {
   const [step, setStep] = useState(1)
   const [data, setData] = useState(INITIAL_ESTIMATOR_DATA)
+  const [status, setStatus] = useState('idle') // idle | sending | sent | error
+  const [honeypot, setHoneypot] = useState('')
 
   const set = (patch) => setData((d) => ({ ...d, ...patch }))
   const setContact = (patch) => setData((d) => ({ ...d, contact: { ...d.contact, ...patch } }))
@@ -54,6 +56,30 @@ export default function Estimator() {
 
   const allDone = complete[1] && complete[2] && complete[3]
 
+  const sendBrief = async () => {
+    if (!allDone || status === 'sending') return
+    setStatus('sending')
+    try {
+      const response = await fetch('/api/estimate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.contact.fullName,
+          email: data.contact.email,
+          phone: data.contact.phone,
+          projectType: PROJECT_TYPES.find((t) => t.id === data.projectType)?.label,
+          timeline: TIMELINES.find((t) => t.id === data.timeline)?.label,
+          budget: data.budget,
+          description: data.description,
+          company: honeypot,
+        }),
+      })
+      setStatus(response.ok ? 'sent' : 'error')
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
     <>
       <SEO
@@ -65,7 +91,7 @@ export default function Estimator() {
       <PageHeader
         eyebrow="Estimator"
         title="Scope a project"
-        lede="Three short steps. Nothing is submitted anywhere until you choose to send it — this composes an email you can review first."
+        lede="Three short steps. Nothing is sent until you press Send brief, and you can review everything in the summary first."
       />
 
       <section className="shell py-14 sm:py-20" aria-label="Project estimator">
@@ -180,15 +206,39 @@ export default function Estimator() {
               >
                 Next
               </button>
-              <a
-                href={allDone ? mailto : undefined}
-                aria-disabled={!allDone}
-                onClick={(e) => !allDone && e.preventDefault()}
-                className={`btn btn-solid ${allDone ? '' : 'pointer-events-none opacity-40'}`}
+              <button
+                type="button"
+                onClick={sendBrief}
+                disabled={!allDone || status === 'sending' || status === 'sent'}
+                className="btn btn-solid disabled:opacity-40"
               >
-                Send brief
-              </a>
+                {status === 'sending' ? 'Sending…' : status === 'sent' ? 'Brief sent' : 'Send brief'}
+              </button>
+              {/* Honeypot for bots; hidden from people and assistive tech. */}
+              <input
+                type="text"
+                name="company"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
             </div>
+
+            <p className="mt-4 min-h-[1.5em] text-[14px] text-muted" role="status" aria-live="polite">
+              {status === 'sent' && 'Thanks, your brief is in. I will reply by email.'}
+              {status === 'error' && (
+                <>
+                  That did not go through.{' '}
+                  <a href={mailto} className="underline underline-offset-4 hover:text-ink">
+                    Send it by email instead
+                  </a>
+                  .
+                </>
+              )}
+            </p>
           </div>
 
           {/* Live summary */}
