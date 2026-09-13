@@ -17,7 +17,7 @@ export const WORK = projects.map((project) => {
 })
 
 /** Homepage order, largest editorial weight first. */
-const FEATURE_ORDER = ['apexgrid', 'stack-battle-ke', 'tasknova', 'vaultora', 'atmosiq', 'mercora']
+const FEATURE_ORDER = ['apexgrid', 'stack-battle-ke']
 
 export const FEATURED_WORK = FEATURE_ORDER
   .map((slug) => WORK.find((w) => w.slug === slug))
@@ -29,7 +29,7 @@ export const getCaseStudy = (slug) => caseStudies.find((c) => c.slug === slug)
 export { caseStudies }
 
 /**
- * Five of the six case studies still carry `[PLACEHOLDER]` copy from the
+ * Both case studies still carry `[PLACEHOLDER]` copy from the
  * original portfolio. The marker is stripped so paragraphs read cleanly, and
  * `isDraft` lets the page say so rather than passing draft text off as final.
  */
