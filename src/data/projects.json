@@ -52,16 +52,16 @@
     "id": 2,
     "live": "https://kingdom-client.waynekip123.workers.dev/",
     "liveHref": "https://kingdom-client.waynekip123.workers.dev/",
-    "previewImage": "/projects/project_2.webp",
+    "previewImage": "/projects/project_2.jpg",
     "tags": [
       "React",
-      "E-commerce"
+      "Flask"
     ],
     "tech": [
       "React",
-      "Node.js",
-      "Cloudinary",
-      "M-Pesa API"
+      "Flask",
+      "PostgreSQL",
+      "M-Pesa"
     ],
     "title": "The Kingdom Collection"
   }
