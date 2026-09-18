@@ -6,6 +6,7 @@ import ChipBar from '@/components/ChipBar'
 import Footer from '@/components/Footer'
 import Grain from '@/components/Grain'
 import useLenis, { getLenis } from '@/hooks/useLenis'
+import useMagnetic from '@/hooks/useMagnetic'
 import { ScrollTrigger } from '@/lib/motion'
 
 export default function RootLayout({ children }) {
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
   )
 
   useLenis()
+  useMagnetic()
 
   // Reset scroll position on navigation, then let ScrollTrigger re-measure
   // the newly mounted page.

@@ -36,7 +36,7 @@ export default function SelectedWork() {
         </ul>
 
         <div className="mt-12 flex justify-center" data-reveal>
-          <Link to="/work" className="btn btn-ghost">All projects</Link>
+          <Link to="/work" className="btn btn-ghost" data-magnetic>All projects</Link>
         </div>
       </div>
     </section>

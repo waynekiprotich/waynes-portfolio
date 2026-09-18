@@ -1,9 +1,13 @@
-import { Fragment, useEffect, useRef } from 'react'
+import { Fragment, Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from '@/lib/router'
 import { gsap, prefersReducedMotion } from '@/lib/motion'
 import { SITE } from '@/data/site'
 
 const NAME = ['Wayne', 'Kiprotich']
+
+// three.js is ~150 KB gzipped; it loads after first paint so the name stays
+// the LCP element and never waits on WebGL.
+const HeroScene = lazy(() => import('./three/HeroScene'))
 
 /**
  * Type-only hero: the name is the image. Atmosphere comes from a drifting
@@ -15,6 +19,16 @@ const NAME = ['Wayne', 'Kiprotich']
 export default function Hero() {
   const root = useRef(null)
   const wash = useRef(null)
+  const [mountScene, setMountScene] = useState(false)
+  const [sceneReady, setSceneReady] = useState(false)
+  const handleReady = useCallback(() => setSceneReady(true), [])
+
+  useEffect(() => {
+    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 300))
+    const cancel = window.cancelIdleCallback || clearTimeout
+    const id = idle(() => setMountScene(true), { timeout: 1200 })
+    return () => cancel(id)
+  }, [])
 
   useEffect(() => {
     if (prefersReducedMotion()) return
@@ -79,6 +93,18 @@ export default function Hero() {
         }}
       />
 
+      <div
+        className={`pointer-events-none absolute inset-x-0 top-[2%] h-[62%] transition-opacity duration-[1400ms]
+                    ease-editorial sm:top-[4%] md:left-auto md:right-[-4%] md:top-[2%] md:h-[80%] md:w-[60%]
+                    ${sceneReady ? 'opacity-50 md:opacity-100' : 'opacity-0'}`}
+      >
+        {mountScene && (
+          <Suspense fallback={null}>
+            <HeroScene onReady={handleReady} />
+          </Suspense>
+        )}
+      </div>
+
       <div className="shell-inner relative">
         <p className="eyebrow" data-intro-fade style={{ animationDelay: '0.18s' }}>
           {SITE.location} — Available for work
@@ -118,8 +144,8 @@ export default function Hero() {
             data-intro-fade
             style={{ animationDelay: '0.36s' }}
           >
-            <Link to="/work" className="btn btn-solid">Selected work</Link>
-            <Link to="/contact" className="btn btn-ghost">Start a project</Link>
+            <Link to="/work" className="btn btn-solid" data-magnetic>Selected work</Link>
+            <Link to="/contact" className="btn btn-ghost" data-magnetic>Start a project</Link>
           </div>
         </div>
       </div>

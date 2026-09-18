@@ -17,7 +17,7 @@ export const WORK = projects.map((project) => {
 })
 
 /** Homepage order, largest editorial weight first. */
-const FEATURE_ORDER = ['kingdom-collection', 'apexgrid', 'kcode']
+const FEATURE_ORDER = ['kenya-quest', 'kingdom-collection', 'apexgrid', 'kcode']
 
 export const FEATURED_WORK = FEATURE_ORDER
   .map((slug) => WORK.find((w) => w.slug === slug))

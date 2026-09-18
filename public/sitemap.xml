@@ -43,6 +43,11 @@
 
   <!-- Case studies — highest-intent SEO surface (specific tech + outcome keywords) -->
   <url>
+    <loc>https://www.waynekiprotich.online/work/kenya-quest</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.waynekiprotich.online/work/kingdom-collection</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

@@ -1,5 +1,27 @@
 [
   {
+    "category": "Travel",
+    "codeHref": "https://github.com/waynekiprotich/kenya-quest-client",
+    "description": "Nairobi adventure guide: pick a landmark on a 3D city, then tick off five small real-world tasks. No sign-up.",
+    "featured": true,
+    "github": "https://github.com/waynekiprotich/kenya-quest-client",
+    "id": 5,
+    "live": "https://kenya-quest-client.waynekip123.workers.dev/",
+    "liveHref": "https://kenya-quest-client.waynekip123.workers.dev/",
+    "previewImage": "/projects/project_5.jpg",
+    "tags": [
+      "React",
+      "Three.js"
+    ],
+    "tech": [
+      "React",
+      "Three.js",
+      "Leaflet",
+      "Motion"
+    ],
+    "title": "Kenya Quest"
+  },
+  {
     "category": "Dashboard",
     "codeHref": "https://github.com/waynekiprotich/apexgrid-client.git",
     "description": "Formula 1 analytics dashboard with live standings, race telemetry, pit strategies, and session insights.",

@@ -19,9 +19,9 @@ export default function ContactCTA() {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
-            <a href={`mailto:${SITE.email}`} className="btn btn-solid">{SITE.email}</a>
-            <Link to="/estimator" className="btn btn-ghost">Scope a project</Link>
-            <Link to="/contact" className="btn btn-ghost">All contact details</Link>
+            <a href={`mailto:${SITE.email}`} className="btn btn-solid" data-magnetic>{SITE.email}</a>
+            <Link to="/estimator" className="btn btn-ghost" data-magnetic>Scope a project</Link>
+            <Link to="/contact" className="btn btn-ghost" data-magnetic>All contact details</Link>
           </div>
         </div>
       </div>
