@@ -197,6 +197,47 @@
     transition: background-color 200ms ease, border-color 150ms ease;
   }
 
+  /* Card with a cursor-following glow (see lib/spotlight.js) and a small
+     lift on hover. The glow sits under the content and never takes clicks. */
+  .spot-card {
+    transition: background-color 200ms ease, border-color 150ms ease,
+                transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .spot-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%),
+                rgb(var(--c-sky) / 0.22), transparent 60%);
+    transition: opacity 300ms ease;
+  }
+  .spot-card > * { position: relative; }
+  .spot-card:hover,
+  .spot-card:focus-visible {
+    border-color: rgb(var(--c-line-rgb) / 0.28);
+    transform: translateY(-4px);
+    box-shadow: 0 24px 60px -30px var(--shadow-dock);
+  }
+  .spot-card:hover::before,
+  .spot-card:focus-visible::before { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .spot-card:hover, .spot-card:focus-visible { transform: none; }
+  }
+
+  /* Expanding article body: animates grid rows from 0fr to 1fr, so the
+     height transition needs no measuring. */
+  .expand {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .expand[data-open='true'] { grid-template-rows: 1fr; }
+  .expand > * { overflow: hidden; }
+
   /* Square icon button matching the pill family — used for the theme toggle.
      44px on a phone, 36px once a pointer is the more likely input. */
   .icon-btn {

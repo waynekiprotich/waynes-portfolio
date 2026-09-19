@@ -24,7 +24,9 @@ export default function Statement() {
 
   useEffect(() => {
     if (prefersReducedMotion()) return
-    const words = heading.current?.querySelectorAll('[data-w]')
+    // Capture the node: React clears refs before effect cleanup runs.
+    const el = heading.current
+    const words = el?.querySelectorAll('[data-w]')
     if (!words?.length) return
 
     const ctx = gsap.context(() => {
@@ -35,10 +37,10 @@ export default function Statement() {
           opacity: 1,
           ease: 'none',
           stagger: 0.08,
-          scrollTrigger: { trigger: heading.current, start: 'top 82%', end: 'bottom 45%', scrub: 0.4 },
+          scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 45%', scrub: 0.4 },
         }
       )
-    }, heading)
+    }, el)
     return () => ctx.revert()
   }, [])
 

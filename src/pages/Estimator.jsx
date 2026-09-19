@@ -15,10 +15,13 @@ import {
  * posts to /api/estimate (a Vercel function that forwards it to Discord). If
  * that fails, the visitor can still send the same brief by email.
  */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export default function Estimator() {
   const [step, setStep] = useState(1)
   const [data, setData] = useState(INITIAL_ESTIMATOR_DATA)
   const [status, setStatus] = useState('idle') // idle | sending | sent | error
+  const [errorText, setErrorText] = useState('')
   const [honeypot, setHoneypot] = useState('')
 
   const set = (patch) => setData((d) => ({ ...d, ...patch }))
@@ -26,7 +29,7 @@ export default function Estimator() {
 
   const complete = useMemo(
     () => ({
-      1: Boolean(data.contact.fullName.trim() && data.contact.email.trim()),
+      1: Boolean(data.contact.fullName.trim() && EMAIL_RE.test(data.contact.email.trim())),
       2: Boolean(data.projectType && data.description.trim()),
       3: Boolean(data.timeline && data.budget),
     }),
@@ -59,23 +62,31 @@ export default function Estimator() {
   const sendBrief = async () => {
     if (!allDone || status === 'sending') return
     setStatus('sending')
+    setErrorText('')
     try {
       const response = await fetch('/api/estimate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: data.contact.fullName,
-          email: data.contact.email,
-          phone: data.contact.phone,
+          name: data.contact.fullName.trim(),
+          email: data.contact.email.trim(),
+          phone: data.contact.phone.trim(),
           projectType: PROJECT_TYPES.find((t) => t.id === data.projectType)?.label,
           timeline: TIMELINES.find((t) => t.id === data.timeline)?.label,
-          budget: data.budget,
-          description: data.description,
+          budget: String(data.budget),
+          description: data.description.trim(),
           company: honeypot,
         }),
       })
-      setStatus(response.ok ? 'sent' : 'error')
+      if (response.ok) {
+        setStatus('sent')
+        return
+      }
+      const body = await response.json().catch(() => ({}))
+      setErrorText(body.error || '')
+      setStatus('error')
     } catch {
+      setErrorText('Network error.')
       setStatus('error')
     }
   }
@@ -231,7 +242,7 @@ export default function Estimator() {
               {status === 'sent' && 'Thanks, your brief is in. I will reply by email.'}
               {status === 'error' && (
                 <>
-                  That did not go through.{' '}
+                  That did not go through{errorText ? ` (${errorText})` : ''}.{' '}
                   <a href={mailto} className="underline underline-offset-4 hover:text-ink">
                     Send it by email instead
                   </a>

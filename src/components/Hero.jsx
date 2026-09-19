@@ -31,15 +31,18 @@ export default function Hero() {
   }, [])
 
   useEffect(() => {
-    if (prefersReducedMotion()) return
+    // Capture the nodes: React clears refs before effect cleanup runs.
+    const section = root.current
+    const target = wash.current
+    if (prefersReducedMotion() || !section || !target) return
 
     const ctx = gsap.context(() => {
-      gsap.to(wash.current, {
+      gsap.to(target, {
         yPercent: 14,
         ease: 'none',
-        scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: 0.6 },
+        scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 0.6 },
       })
-    }, root)
+    }, section)
 
     return () => ctx.revert()
   }, [])

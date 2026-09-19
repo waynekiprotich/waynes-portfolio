@@ -1,1 +1,20 @@
-[{"category":"Design","content":"Full content goes here...","date":"Sep 28, 2024","excerpt":"Exploring the power of whitespace, high contrast, and glassmorphism in modern web applications.","id":2,"title":"Why Minimalist UI Wins in 2024"}]
+[
+  {
+    "id": 2,
+    "slug": "minimalist-ui-2026",
+    "category": "Design",
+    "date": "Mar 2026",
+    "dateTime": "2026-03-12",
+    "readTime": "4 min read",
+    "title": "Why Minimalist UI Still Wins in 2026",
+    "excerpt": "Less on the screen means less for people to decode. How whitespace, contrast and purposeful motion help users finish what they came to do.",
+    "tags": ["Whitespace", "Contrast", "Motion", "Accessibility"],
+    "content": [
+      "Every element on a screen asks the user for a little attention. Minimalism is not about making things look empty; it is about spending that attention only where it helps someone get their task done.",
+      "Whitespace is structure. Generous spacing groups related things without extra borders or boxes, so people can scan a page and find the next step in a second rather than reading everything to work out what matters.",
+      "Contrast carries the hierarchy. One strong primary action, readable text that passes WCAG AA in light and dark mode, and quieter secondary details. When everything shouts, nothing is heard.",
+      "Motion should explain, not decorate. A card that lifts toward the cursor says it is clickable; content that eases in as you scroll shows where you are. Anything longer than about half a second starts to feel like waiting, and every animation respects prefers-reduced-motion.",
+      "The test is simple: can a first-time visitor on a phone, on a slow connection, understand the page and act on it without help? If yes, the design is minimal enough. If not, remove something before adding anything."
+    ]
+  }
+]

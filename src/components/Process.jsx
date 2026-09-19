@@ -14,23 +14,26 @@ export default function Process() {
   const [active, setActive] = useState(null)
 
   useEffect(() => {
-    if (prefersReducedMotion() || !rail.current) return
+    // Capture the node: React clears refs before effect cleanup runs, so a
+    // ref-object scope would be null by the time ctx.revert() resolves it.
+    const el = rail.current
+    if (prefersReducedMotion() || !el) return
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        rail.current,
+        el,
         { scaleY: 0 },
         {
           scaleY: 1,
           ease: 'none',
           scrollTrigger: {
-            trigger: rail.current.parentNode,
+            trigger: el.parentNode,
             start: 'top 72%',
             end: 'bottom 72%',
             scrub: 0.4,
           },
         }
       )
-    }, rail)
+    }, el)
     return () => ctx.revert()
   }, [])
 

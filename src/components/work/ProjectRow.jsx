@@ -18,18 +18,20 @@ export default function ProjectRow({ project, index = 0, priority = false }) {
   const frame = useRef(null)
 
   useEffect(() => {
-    if (prefersReducedMotion()) return
+    // Capture the node: React clears refs before effect cleanup runs.
+    const el = frame.current
+    if (prefersReducedMotion() || !el) return
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        frame.current,
+        el,
         { clipPath: 'inset(9% 7% 9% 7% round 28px)' },
         {
           clipPath: 'inset(0% 0% 0% 0% round 20px)',
           ease: 'none',
-          scrollTrigger: { trigger: frame.current, start: 'top 95%', end: 'top 45%', scrub: 0.5 },
+          scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 45%', scrub: 0.5 },
         }
       )
-    }, frame)
+    }, el)
     return () => ctx.revert()
   }, [])
 

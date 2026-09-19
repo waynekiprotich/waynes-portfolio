@@ -17,7 +17,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const webhook = process.env.DISCORD_WEBHOOK_URL
+  // Trimmed: a value pasted into the Vercel dashboard often carries a
+  // trailing newline, which makes fetch() throw on an invalid URL.
+  const webhook = (process.env.DISCORD_WEBHOOK_URL || '').trim()
   if (!webhook) {
     return res.status(500).json({ error: 'Notifications are not configured' })
   }
@@ -63,25 +65,36 @@ export default async function handler(req, res) {
     .filter(([, value]) => value)
     .map(([name, value]) => ({ name, value, inline: true }))
 
-  const discord = await fetch(webhook, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      username: 'Portfolio Estimator',
-      // Visitor text must not be able to ping @everyone, roles or users.
-      allowed_mentions: { parse: [] },
-      embeds: [
-        {
-          title: `New project brief from ${brief.name}`,
-          description: brief.description,
-          fields,
-          timestamp: new Date().toISOString(),
-        },
-      ],
-    }),
-  })
+  let discord
+  try {
+    discord = await fetch(webhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(8000),
+      body: JSON.stringify({
+        username: 'Portfolio Estimator',
+        // Visitor text must not be able to ping @everyone, roles or users.
+        allowed_mentions: { parse: [] },
+        embeds: [
+          {
+            title: `New project brief from ${brief.name}`.slice(0, 256),
+            description: brief.description,
+            fields,
+            timestamp: new Date().toISOString(),
+          },
+        ],
+      }),
+    })
+  } catch (error) {
+    console.error('Discord request failed:', error)
+    return res.status(502).json({ error: 'Could not reach the notification service' })
+  }
 
   if (!discord.ok) {
+    // Logged so the cause (revoked webhook, rate limit, bad payload) shows up
+    // in the Vercel function logs; the visitor only gets a generic message.
+    const detail = await discord.text().catch(() => '')
+    console.error(`Discord rejected the brief: ${discord.status} ${detail.slice(0, 500)}`)
     return res.status(502).json({ error: 'Could not deliver the brief' })
   }
 
